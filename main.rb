@@ -7,6 +7,8 @@ File.delete(DB_NAME) if File.exist?(DB_NAME)
 
 DATABASE = SQLite3::Database.new DB_NAME
 
+# ----------------------------------------------------------------
+
 q = "CREATE TABLE #{Task.table_name} (" \
   'id          INTEGER     PRIMARY KEY,' \
   'status      VARCHAR(10) NOT NULL,' \
@@ -16,19 +18,41 @@ q = "CREATE TABLE #{Task.table_name} (" \
 
 DATABASE.execute(q)
 
+q = "CREATE TABLE #{Tag.table_name} (" \
+  'id          INTEGER     PRIMARY KEY,' \
+  'name        VARCHAR(10) NOT NULL' \
+  ');'
+
+DATABASE.execute(q)
+
+# ----------------------------------------------------------------
+
 Task.insert DATABASE, Task.new(:todo, :low, 'heiheihei')
 Task.insert DATABASE, Task.new(:done, :high, 'daimu')
 Task.insert DATABASE, Task.new(:doing, :normal, 'skr')
 Task.insert DATABASE, Task.new(:todo, :low, 'otkachai')
 Task.insert DATABASE, Task.new(:todo, :high, 'izponarazdai')
 
+Tag.insert DATABASE, Tag.new(:programming)
+Tag.insert DATABASE, Tag.new(:school)
+Tag.insert DATABASE, Tag.new(:meh)
+
+puts 'All tasks:'
 result = Task.all DATABASE
 
 result.each do |row|
   puts row.join ', '
 end
 
-puts 'ONLY TODO TASKS: '
+puts 'All tags:'
+result = Tag.all DATABASE
+
+result.each do |row|
+  puts row.join ', '
+end
+
+
+puts 'ONLY TODO TASKS:'
 result = Task.find_by DATABASE, :status, :todo
 result.each do |row|
   puts row.join ', '
