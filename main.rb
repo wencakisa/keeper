@@ -1,6 +1,5 @@
 require 'sqlite3'
 
-require './db_manager'
 require './models/task'
 
 DB_NAME = 'todo.sqlite'.freeze
@@ -8,9 +7,7 @@ File.delete(DB_NAME) if File.exist?(DB_NAME)
 
 DATABASE = SQLite3::Database.new DB_NAME
 
-manager = DatabaseManager.instance
-
-q = "CREATE TABLE #{manager.get_table_name Task} (" \
+q = "CREATE TABLE #{Task.table_name} (" \
   'id          INTEGER     PRIMARY KEY,' \
   'status      VARCHAR(10) NOT NULL,' \
   'priority    VARCHAR(10) NOT NULL,' \
@@ -19,14 +16,20 @@ q = "CREATE TABLE #{manager.get_table_name Task} (" \
 
 DATABASE.execute(q)
 
-manager.insert DATABASE, Task.new(:todo, :low, 'heiheihei')
-manager.insert DATABASE, Task.new(:done, :high, 'daimu')
-manager.insert DATABASE, Task.new(:doing, :normal, 'skr')
-manager.insert DATABASE, Task.new(:todo, :low, 'otkachai')
-manager.insert DATABASE, Task.new(:todo, :high, 'izponarazdai')
+Task.insert DATABASE, Task.new(:todo, :low, 'heiheihei')
+Task.insert DATABASE, Task.new(:done, :high, 'daimu')
+Task.insert DATABASE, Task.new(:doing, :normal, 'skr')
+Task.insert DATABASE, Task.new(:todo, :low, 'otkachai')
+Task.insert DATABASE, Task.new(:todo, :high, 'izponarazdai')
 
-result = manager.all DATABASE, Task
+result = Task.all DATABASE
 
+result.each do |row|
+  puts row.join ', '
+end
+
+puts 'ONLY TODO TASKS: '
+result = Task.find_by DATABASE, :status, :todo
 result.each do |row|
   puts row.join ', '
 end
