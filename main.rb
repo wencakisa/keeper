@@ -1,6 +1,6 @@
 require 'sqlite3'
 
-require './models/task'
+require './lib/keeper'
 
 DB_NAME = 'todo.sqlite'.freeze
 File.delete(DB_NAME) if File.exist?(DB_NAME)
