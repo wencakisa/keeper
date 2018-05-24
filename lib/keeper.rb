@@ -1,3 +1,5 @@
+require_relative './keeper/database_modules/database_serializable'
+require_relative './keeper/database_modules/many_to_many.rb'
 require_relative './keeper/models/task'
 require_relative './keeper/models/tag'
-require_relative './keeper/db_serializable'
+require_relative './keeper/models/task_tag_connection'

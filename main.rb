@@ -7,35 +7,39 @@ File.delete(DB_NAME) if File.exist?(DB_NAME)
 
 DATABASE = SQLite3::Database.new DB_NAME
 
-# ----------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-q = "CREATE TABLE #{Task.table_name} (" \
-  'id          INTEGER     PRIMARY KEY,' \
-  'status      VARCHAR(10) NOT NULL,' \
-  'priority    VARCHAR(10) NOT NULL,' \
-  'description VARCHAR(50) NOT NULL' \
-  ');'
+[Task, Tag, TaskTagConnection].map { |klass| klass.initialize_table(DATABASE) }
 
-DATABASE.execute(q)
+TaskTagConnection.add_index DATABASE, %i[task_id tag_id], true
 
-q = "CREATE TABLE #{Tag.table_name} (" \
-  'id          INTEGER     PRIMARY KEY,' \
-  'name        VARCHAR(10) NOT NULL' \
-  ');'
+# ------------------------------------------------------------------------------
 
-DATABASE.execute(q)
+task1 = Task.new(:todo, :low, 'heiheihei')
+task2 = Task.new(:done, :high, 'daimu')
 
-# ----------------------------------------------------------------
-
-Task.insert DATABASE, Task.new(:todo, :low, 'heiheihei')
-Task.insert DATABASE, Task.new(:done, :high, 'daimu')
+Task.insert DATABASE, task1
+Task.insert DATABASE, task2
 Task.insert DATABASE, Task.new(:doing, :normal, 'skr')
 Task.insert DATABASE, Task.new(:todo, :low, 'otkachai')
 Task.insert DATABASE, Task.new(:todo, :high, 'izponarazdai')
 
-Tag.insert DATABASE, Tag.new(:programming)
-Tag.insert DATABASE, Tag.new(:school)
+# ------------------------------------------------------------------------------
+
+tag1 = Tag.new(:programming)
+tag2 = Tag.new(:school)
+
+Tag.insert DATABASE, tag1
+Tag.insert DATABASE, tag2
 Tag.insert DATABASE, Tag.new(:meh)
+
+# ------------------------------------------------------------------------------
+
+TaskTagConnection.insert DATABASE, TaskTagConnection.new(task1.id, tag1.id)
+TaskTagConnection.insert DATABASE, TaskTagConnection.new(task1.id, tag2.id)
+TaskTagConnection.insert DATABASE, TaskTagConnection.new(task2.id, tag2.id)
+
+# ------------------------------------------------------------------------------
 
 puts 'All tasks:'
 result = Task.all DATABASE
@@ -51,9 +55,22 @@ result.each do |row|
   puts row.join ', '
 end
 
-
 puts 'ONLY TODO TASKS:'
 result = Task.find_by DATABASE, :status, :todo
 result.each do |row|
   puts row.join ', '
 end
+
+puts 'Tags for task 1:'
+result = TaskTagConnection.get_related_models DATABASE, task1, Tag
+result.each do |row|
+  puts row.join ', '
+end
+
+puts 'Tasks for tag 2:'
+result = TaskTagConnection.get_related_models DATABASE, tag2, Task
+result.each do |row|
+  puts row.join ', '
+end
+
+DATABASE.close

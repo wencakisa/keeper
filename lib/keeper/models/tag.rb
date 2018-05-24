@@ -1,11 +1,19 @@
-require_relative '../db_serializable'
-
 class Tag
   include DatabaseSerializable
 
   attr_reader :name
 
-  def initialize(name)
+  def initialize(id = nil, name)
+    @id = id
     @name = name
+  end
+
+  def self.table_values
+    {
+      name: {
+        type: 'VARCHAR(10)',
+        null: false
+      }
+    }
   end
 end
