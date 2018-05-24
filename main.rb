@@ -55,7 +55,7 @@ result.each do |row|
   puts row.join ', '
 end
 
-puts 'ONLY TODO TASKS:'
+puts 'Only todo tasks:'
 result = Task.find_by DATABASE, :status, :todo
 result.each do |row|
   puts row.join ', '

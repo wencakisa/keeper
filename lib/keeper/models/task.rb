@@ -1,3 +1,5 @@
+require_relative '../fields'
+
 class Task
   include DatabaseSerializable
 
@@ -10,20 +12,11 @@ class Task
     @description = description
   end
 
-  def self.table_values
-    {
-      status: {
-        type: 'VARCHAR(10)',
-        null: false
-      },
-      priority: {
-        type: 'VARCHAR(10)',
-        null: false
-      },
-      description: {
-        type: 'VARCHAR(50)',
-        null: false
-      }
-    }
+  def self.database_fields
+    [
+      StringField.new(:status, false, 10),
+      StringField.new(:priority, false, 10),
+      StringField.new(:description, true, 5)
+    ]
   end
 end

@@ -16,13 +16,9 @@ module DatabaseSerializable
     end
 
     def initialize_table(database)
-      values = table_values.map do |key, value|
-        "#{key} #{value[:type]} #{'NOT NULL' unless value[:null]}"
-      end
-
       q = "CREATE TABLE #{table_name} (" \
-          'id INTEGER PRIMARY KEY,' \
-          "#{values.join ', '}" \
+            'id INTEGER PRIMARY KEY,' \
+            "#{database_fields.map(&:to_s).join ', '}" \
           ');'
 
       database.execute q
@@ -35,7 +31,7 @@ module DatabaseSerializable
       values_placeholders = [['?'] * fields.length].join ', '
 
       q = "INSERT INTO #{table_name}(#{fields_as_rows}) " \
-      "VALUES(#{values_placeholders});"
+          "VALUES(#{values_placeholders});"
 
       fields_as_values = fields.map do |field|
         entry.instance_variable_get(field).to_s

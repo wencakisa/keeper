@@ -10,16 +10,7 @@ class TaskTagConnection
     @tag_id = tag_id
   end
 
-  def self.table_values
-    {
-      task_id: {
-        type: 'INTEGER',
-        null: false
-      },
-      tag_id: {
-        type: 'INTEGER',
-        null: false
-      }
-    }
+  def self.database_fields
+    %i[task_id tag_id].map { |value| IntegerField.new(value) }
   end
 end

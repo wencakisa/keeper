@@ -8,12 +8,9 @@ class Tag
     @name = name
   end
 
-  def self.table_values
-    {
-      name: {
-        type: 'VARCHAR(10)',
-        null: false
-      }
-    }
+  def self.database_fields
+    [
+      StringField.new(:name)
+    ]
   end
 end
