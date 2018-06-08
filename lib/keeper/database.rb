@@ -1,2 +1,2 @@
-require_relative './database/database_serializable'
-require_relative './database/many_to_many'
+require 'keeper/database/database_serializable'
+require 'keeper/database/many_to_many'

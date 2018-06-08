@@ -1,3 +1,3 @@
-require_relative './fields/field'
-require_relative './fields/string_field'
-require_relative './fields/integer_field'
+require 'keeper/fields/field'
+require 'keeper/fields/string_field'
+require 'keeper/fields/integer_field'

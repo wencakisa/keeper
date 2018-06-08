@@ -1,3 +1,3 @@
-require_relative './keeper/database'
-require_relative './keeper/fields'
-require_relative './keeper/models'
+require 'keeper/database'
+require 'keeper/fields'
+require 'keeper/models'

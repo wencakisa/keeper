@@ -1,6 +1,10 @@
-require 'sqlite3'
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require './lib/keeper'
+require 'sqlite3'
+require 'keeper'
+
+# ------------------------------------------------------------------------------
 
 DB_NAME = 'todo.sqlite'.freeze
 File.delete(DB_NAME) if File.exist?(DB_NAME)

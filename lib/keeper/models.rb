@@ -1,3 +1,3 @@
-require_relative './models/tag'
-require_relative './models/task'
-require_relative './models/task_tag_connection'
+require 'keeper/models/tag'
+require 'keeper/models/task'
+require 'keeper/models/task_tag_connection'
