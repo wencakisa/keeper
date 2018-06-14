@@ -13,4 +13,4 @@ DATABASE = SQLite3::Database.new DB_NAME
 
 # ------------------------------------------------------------------------------
 
-[Task, Tag, TaskTagConnection].map { |klass| klass.initialize_table(DATABASE) }
+[Task, Tag, TaskTagConnection, User].map { |klass| klass.initialize_table(DATABASE) }
