@@ -1,5 +1,3 @@
-require_relative '../fields'
-
 class Task
   include DatabaseSerializable
 
