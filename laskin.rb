@@ -4,8 +4,8 @@ require './config'
 TaskTagConnection.add_index DATABASE, %i[task_id tag_id], true
 TaskPriorityConnection.add_index DATABASE, %i[task_id priority_id], true
 TaskStatusConnection.add_index DATABASE, %i[task_id status_id], true
-UserTodoListConnection.add_index DATABASE, %i[user_id todo_list_id], true
-TodoListTaskConnection.add_index DATABASE, %i[todo_list_id task_id], true
+UserTodoListConnection.add_index DATABASE, %i[user_id todolist_id], true
+TodoListTaskConnection.add_index DATABASE, %i[todolist_id task_id], true
 #------------------------------------------------------------------------------
 user1 = User.new('Julion', 17)
 user2 = User.new('Lasgo', 17)
@@ -134,6 +134,20 @@ end
 
 puts '','Information for Third User'
 result = UserTodoListConnection.get_related_models DATABASE, user3, User
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Tasks in First TodoList'
+result = TodoListTaskConnection.get_related_models DATABASE, todolist1, TodoList
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Tasks in Second TodoList'
+result = TodoListTaskConnection.get_related_models DATABASE, todolist2, TodoList
 
 result.each do |row|
   puts row.join ', '
