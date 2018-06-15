@@ -81,5 +81,64 @@ TodoListTaskConnection.insert DATABASE, TodoListTaskConnection.new(todolist2.id,
 UserTodoListConnection.insert DATABASE, UserTodoListConnection.new(user1.id, todolist1.id)
 UserTodoListConnection.insert DATABASE, UserTodoListConnection.new(user2.id, todolist1.id)
 UserTodoListConnection.insert DATABASE, UserTodoListConnection.new(user3.id, todolist2.id)
+UserTodoListConnection.insert DATABASE, UserTodoListConnection.new(user2.id, todolist2.id)
 #-------------------------------------------------------------------------------
+puts 'All tasks:'
+result = Task.all DATABASE
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','All tags:'
+result = Tag.all DATABASE
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Only todo tasks:'
+result = TaskStatusConnection.get_related_models DATABASE, status1, Status
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Only done tasks:'
+result = TaskStatusConnection.get_related_models DATABASE, status2, Status
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Only doing tasks:'
+result = TaskStatusConnection.get_related_models DATABASE, status3, Status
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Information for First User'
+result = UserTodoListConnection.get_related_models DATABASE, user1, User
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Information for Second User'
+result = UserTodoListConnection.get_related_models DATABASE, user2, User
+
+result.each do |row|
+  puts row.join ', '
+end
+
+puts '','Information for Third User'
+result = UserTodoListConnection.get_related_models DATABASE, user3, User
+
+result.each do |row|
+  puts row.join ', '
+end
+
+
 #-------------------------------------------------------------------------------
+DATABASE.close
