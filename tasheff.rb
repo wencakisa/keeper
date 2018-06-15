@@ -1,17 +1,19 @@
 require './config'
 
 TaskTagConnection.add_index DATABASE, %i[task_id tag_id], true
+TaskPriorityConnection.add_index DATABASE, %i[task_id priority_id], true
+TaskStatusConnection.add_index DATABASE, %i[task_id status_id], true
 
 # ------------------------------------------------------------------------------
 
-task1 = Task.new(:todo, :low, 'heiheihei')
-task2 = Task.new(:done, :high, 'daimu')
+task1 = Task.new('heiheihei')
+task2 = Task.new('daimu')
 
 Task.insert DATABASE, task1
 Task.insert DATABASE, task2
-Task.insert DATABASE, Task.new(:doing, :normal, 'skr')
-Task.insert DATABASE, Task.new(:todo, :low, 'otkachai')
-Task.insert DATABASE, Task.new(:todo, :high, 'izponarazdai')
+Task.insert DATABASE, Task.new('skr')
+Task.insert DATABASE, Task.new('otkachai')
+Task.insert DATABASE, Task.new('izponarazdai')
 
 # ------------------------------------------------------------------------------
 
@@ -29,6 +31,30 @@ TaskTagConnection.insert DATABASE, TaskTagConnection.new(task1.id, tag2.id)
 TaskTagConnection.insert DATABASE, TaskTagConnection.new(task2.id, tag2.id)
 
 # ------------------------------------------------------------------------------
+status1 = Status.new(:Todo)
+status2 = Status.new(:Done)
+status3 = Status.new(:Doing)
+
+Status.insert DATABASE, status1
+Status.insert DATABASE, status2
+Status.insert DATABASE, status3
+#-------------------------------------------------------------------------------
+
+TaskStatusConnection.insert DATABASE, TaskStatusConnection.new(task1.id, status1.id)
+TaskStatusConnection.insert DATABASE, TaskStatusConnection.new(task2.id, status2.id)
+
+#-------------------------------------------------------------------------------
+priority1 = Priority.new(:High)
+priority2 = Priority.new(:Normal)
+priority3 = Priority.new(:Low)
+
+Priority.insert DATABASE, priority1
+Priority.insert DATABASE, priority2
+Priority.insert DATABASE, priority3
+#-------------------------------------------------------------------------------
+TaskPriorityConnection.insert DATABASE, TaskPriorityConnection.new(task1.id, priority1.id)
+TaskPriorityConnection.insert DATABASE, TaskPriorityConnection.new(task2.id, priority2.id)
+#-------------------------------------------------------------------------------
 
 puts 'All tasks:'
 result = Task.all DATABASE
@@ -45,7 +71,8 @@ result.each do |row|
 end
 
 puts 'Only todo tasks:'
-result = Task.find_by DATABASE, :status, :todo
+result = TaskStatusConnection.get_related_models DATABASE, status1, Status
+
 result.each do |row|
   puts row.join ', '
 end
