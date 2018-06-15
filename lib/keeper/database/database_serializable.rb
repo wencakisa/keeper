@@ -52,7 +52,7 @@ module DatabaseSerializable
     end
 
     def find_by(database, field_name, field_value)
-      database.execute all_query + " WHERE #{field_name} = \"#{field_value}\";"
+      database.execute all_query + " WHERE #{field_name} = ?;", field_value
     end
 
     def all(database)

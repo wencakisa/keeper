@@ -1,5 +1,5 @@
 class IntegerField < Field
-  def initialize(name, allow_null = false)
+  def initialize(name, allow_null = nil)
     super(name, allow_null)
   end
 

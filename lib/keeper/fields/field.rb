@@ -1,7 +1,7 @@
 class Field
   attr_reader :name, :allow_null
 
-  def initialize(name, allow_null)
+  def initialize(name, allow_null = false)
     @name = name
     @allow_null = allow_null
   end

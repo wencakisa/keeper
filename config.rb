@@ -6,12 +6,15 @@ require 'keeper'
 
 # ------------------------------------------------------------------------------
 
-DB_NAME = 'todo.sqlite'.freeze
+DB_NAME = 'todo.db'.freeze
 File.delete(DB_NAME) if File.exist?(DB_NAME)
 
 DATABASE = SQLite3::Database.new DB_NAME
 
 # ------------------------------------------------------------------------------
 
-[Task, Tag, TaskTagConnection, User, Priority, Status, TaskStatusConnection, TaskPriorityConnection,
-  TodoList, UserTodoListConnection,TodoListTaskConnection].map { |klass| klass.initialize_table(DATABASE) }
+[
+  Task, Tag, TaskTagConnection, User,
+  Priority, Status, TodoList, TodoListTaskConnection
+].map { |klass| klass.initialize_table(DATABASE) }
+

@@ -3,7 +3,7 @@ class StringField < Field
 
   attr_reader :max_length
 
-  def initialize(name, allow_null = false, max_length = MAX_LENGTH)
+  def initialize(name, allow_null = nil, max_length = MAX_LENGTH)
     super(name, allow_null)
 
     @max_length = max_length

@@ -12,7 +12,7 @@ class User
   def self.database_fields
     [
       StringField.new(:username, false, 16),
-      IntegerField.new(:age, true)
+      IntegerField.new(:age)
     ]
   end
 end
